@@ -34,7 +34,7 @@ export async function build({ basePath = process.env.SITE_BASE_PATH || '' } = {}
   try {
     await cp(path.join(root, 'public'), staging, { recursive: true });
     const css = await readFile(path.join(root, 'src/styles/site.css'));
-    const scripts = ['site.js', 'navigation.js', 'select.js', 'motion.js', 'header-scroll.js'];
+    const scripts = ['site.js', 'contact-submit.js', 'navigation.js', 'select.js', 'motion.js', 'header-scroll.js'];
     const js = Buffer.from((await Promise.all(scripts.map(name => readFile(path.join(root, 'src/client', name), 'utf8')))).join('\n;\n'));
     const assets = { css: `/assets/site-${digest(css)}.css`, js: `/assets/site-${digest(js)}.js` };
     await writeFile(path.join(staging, assets.css), css);

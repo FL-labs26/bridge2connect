@@ -11,13 +11,14 @@ document.documentElement.classList.add('js');
     link.href=url.href;
   });
   const form=document.querySelector('#contact-form'), dialog=document.querySelector('#message-dialog');
-  if (!(form instanceof HTMLFormElement) || !(dialog instanceof HTMLDialogElement)) return;
+  if (!(form instanceof HTMLFormElement)) return;
   const messageArea=document.querySelector('#prepared-message'), copyStatus=document.querySelector('#copy-status');
   const subject=form.elements.namedItem('subject');
   if (subject instanceof HTMLSelectElement) {
     const matching=[...subject.options].find(option=>option.dataset.topic===params.get('topic') || option.value===params.get('onderwerp') || option.textContent===params.get('onderwerp'));
     if(matching) subject.value=matching.value;
   }
+  if (form.dataset.delivery === 'web3forms' || !(dialog instanceof HTMLDialogElement)) return;
   const validateField=element=>{
     let error='';
     if(!element.value.trim()) error=element.name==='message'?t('Vertel kort waar uw vraag over gaat.','Please briefly describe your question.'):element.name==='email'?t('Vul uw e-mailadres in.','Please enter your email address.'):t('Vul uw naam in.','Please enter your name.');

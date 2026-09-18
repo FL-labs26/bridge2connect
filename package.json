@@ -13,7 +13,7 @@
     "preview": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
-    "test": "node --test --test-concurrency=1 tests/site.test.mjs tests/http.test.mjs tests/deploy.test.mjs tests/motion.test.mjs",
+    "test": "node --test --test-concurrency=1 tests/site.test.mjs tests/http.test.mjs tests/deploy.test.mjs tests/motion.test.mjs tests/contact-delivery.test.mjs",
     "preflight": "node scripts/preflight.mjs"
   }
 }

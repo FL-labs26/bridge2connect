@@ -1,3 +1,4 @@
+import { resolveContactDelivery } from '../src/content/contact-delivery.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -26,7 +27,7 @@ test('Accepts only safe external URL schemes', () => { assert.equal(safeUrl('jav
 test('Rejects invalid email recipients', () => { assert.equal(safeUrl('none', { email: true }), ''); assert.equal(safeUrl('', { email: true }), ''); assert.equal(safeUrl('test@example.org', { email: true }), 'mailto:test@example.org'); });
 test('Does not pretend the website is published', () => { assert.equal(site.published, false); assert.ok(publicationIssues().length > 0); });
 test('Contains all supplied company names', async () => { const html = await readFile(path.join(root, 'dist/netwerk/index.html'), 'utf8'); for (const name of companies) assert.ok(html.includes(escape(name))); });
-test('Contact form does not claim to send a message', async () => { const html = await readFile(path.join(root, 'dist/contact/index.html'), 'utf8'); assert.ok(html.includes('E-mail opstellen')); assert.ok(html.includes('nog niet verstuurd')); assert.ok(html.includes(`data-recipient="${site.email}"`)); });
+test('Contact form accurately describes its configured mode', async () => { const html = await readFile(path.join(root, 'dist/contact/index.html'), 'utf8'); if (resolveContactDelivery().enabled) { assert.ok(html.includes('Bericht versturen')); assert.ok(!html.includes('id="open-email"')); } else { assert.ok(html.includes('E-mail opstellen')); assert.ok(html.includes('nog niet verstuurd')); } assert.ok(html.includes(`data-recipient="${site.email}"`)); });
 test('No tracker or external font dependency in generated HTML', async () => { const html = await readFile(path.join(root, 'dist/index.html'), 'utf8'); assert.ok(!/https:\/\/(?:fonts\.|www\.googletagmanager|www\.google-analytics)/.test(html)); });
 test('Robots blocks indexing in draft mode', async () => { assert.equal(await readFile(path.join(root, 'dist/robots.txt'), 'utf8'), 'User-agent: *\nDisallow: /\n'); });
 test('Hero is a declared AI still, not mislabeled interactive 3D', async () => { const html = await readFile(path.join(root, 'dist/index.html'), 'utf8'); assert.ok(html.includes('AI-sfeerimpressie')); assert.ok(!html.includes('<canvas')); assert.ok(html.includes('fetchpriority="high"')); });
