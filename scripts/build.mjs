@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { site, pages } from '../src/content/site.mjs';
+import { languages, pageInfo } from '../src/content/locale.mjs';
 import { layout } from '../src/components/layout.mjs';
 import home from '../src/pages/home.mjs';
 import expertise from '../src/pages/expertise.mjs';
@@ -33,15 +34,17 @@ export async function build({ basePath = process.env.SITE_BASE_PATH || '' } = {}
   try {
     await cp(path.join(root, 'public'), staging, { recursive: true });
     const css = await readFile(path.join(root, 'src/styles/site.css'));
-    const js = Buffer.concat([await readFile(path.join(root, 'src/client/site.js')), Buffer.from('\n;\n'), await readFile(path.join(root, 'src/client/motion.js'))]);
+    const scripts = ['site.js', 'navigation.js', 'select.js', 'motion.js', 'header-scroll.js'];
+    const js = Buffer.from((await Promise.all(scripts.map(name => readFile(path.join(root, 'src/client', name), 'utf8')))).join('\n;\n'));
     const assets = { css: `/assets/site-${digest(css)}.css`, js: `/assets/site-${digest(js)}.js` };
     await writeFile(path.join(staging, assets.css), css);
     await writeFile(path.join(staging, assets.js), js);
-    for (const [key, page] of Object.entries(pages)) {
-      const relative = page.path === '/404.html' ? '404.html' : path.join(page.path, 'index.html');
+    for (const lang of languages) for (const key of Object.keys(pages)) {
+      const page = pageInfo(key, lang);
+      const relative = page.path.endsWith('.html') ? page.path : path.join(page.path, 'index.html');
       const dest = path.join(staging, relative);
       await mkdir(path.dirname(dest), { recursive: true });
-      const html = layout(page, renderers[key](), { assets, className: `page-${key}`, withCta: !['contact', 'privacy', 'notfound'].includes(key) });
+      const html = layout(page, renderers[key](lang), { assets, baseUrl: process.env.SITE_ORIGIN ? new URL(deployBase + '/', process.env.SITE_ORIGIN).href : '', className: `page-${key}`, withCta: !['contact', 'privacy', 'notfound'].includes(key) });
       await writeFile(dest, prefixHtmlPaths(html, deployBase), 'utf8');
     }
     await writeFile(path.join(staging, '.nojekyll'), '');
@@ -53,7 +56,7 @@ export async function build({ basePath = process.env.SITE_BASE_PATH || '' } = {}
     await writeFile(path.join(staging, '_headers'), `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`);
     await rm(output, { recursive: true, force: true });
     await rename(staging, output);
-    const result = { pages: Object.keys(pages).length, output, cssBytes: css.length, jsBytes: js.length, mode: site.published ? 'published' : 'draft' };
+    const result = { pages: Object.keys(pages).length * languages.length, output, cssBytes: css.length, jsBytes: js.length, mode: site.published ? 'published' : 'draft' };
     console.log(`Built ${result.pages} pages → dist/ (${result.mode})`);
     return result;
   } catch (error) { await rm(staging, { recursive: true, force: true }); throw error; }

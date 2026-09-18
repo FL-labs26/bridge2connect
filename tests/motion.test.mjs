@@ -28,7 +28,7 @@ function setup({ withHero = true, width = 1440 } = {}) {
 }
 test('Scroll logic: portrait page works without a hero', () => { const c=setup({withHero:false});c.scroll(700);assert.equal(c.top.hidden,false); });
 test('Scroll logic: desktop image moves and displacement is bounded', () => { const c=setup();c.scroll(300);assert.equal(c.values['--hero-drift'],'42.40px');c.scroll(900);assert.equal(c.values['--hero-drift'],'76.00px');c.scroll(0);assert.equal(c.values['--hero-drift'],'0.00px'); });
-test('Scroll logic: mobile displacement is limited to 24px', () => { const c=setup({width:390});c.scroll(500);assert.equal(c.values['--hero-drift'],'24.00px'); });
+test('Scroll logic: mobile composition stays static', () => { const c=setup({width:390});c.scroll(500);assert.equal(c.values['--hero-drift'],'0.00px'); });
 test('Scroll logic: reduced motion resets displacement immediately', () => { const c=setup();c.scroll(350);c.reduced.matches=true;c.reduced.fire('change');c.flush();assert.equal(c.values['--hero-drift'],'0.00px'); });
 test('Scroll logic: button thresholds use hysteresis', () => { const c=setup();assert.equal(c.top.hidden,true);c.scroll(590);assert.equal(c.top.hidden,true);c.scroll(610);assert.equal(c.top.hidden,false);c.scroll(500);assert.equal(c.top.hidden,false);c.scroll(449);assert.equal(c.top.hidden,true); });
 test('Scroll logic: return moves focus before native scroll without navigation', () => { const c=setup();c.scroll(700);c.doc.activeElement=c.top;c.top.fire('click');c.flush();assert.equal(c.events[0][0],'focus');assert.equal(c.events[0][1].preventScroll,true);assert.equal(c.events[1][0],'scroll');assert.equal(c.events[1][1].behavior,'smooth');assert.equal(c.win.scrollY,0);assert.equal(c.doc.activeElement,c.main);assert.equal(c.top.hidden,true); });
@@ -40,8 +40,8 @@ test('Scroll logic: hidden tab cancels outstanding frame', () => { const c=setup
 test('Scroll logic: focused button is not left hidden with stranded focus', () => { const c=setup();c.scroll(700);c.doc.activeElement=c.top;c.scroll(0);assert.equal(c.doc.activeElement,c.main);assert.equal(c.top.hidden,true); });
 test('Scroll markup: semantics, bounded portrait and no old decoration', async () => {
   const [layout,css,home] = await Promise.all(['components/layout.mjs','styles/site.css','pages/home.mjs'].map(p=>readFile(new URL('../src/'+p,import.meta.url),'utf8')));
-  assert.ok(layout.includes('type="button" aria-label="Terug naar boven" hidden'));
-  assert.ok(layout.includes('class="footer-top-link" href="#main"'));
+  assert.ok(layout.includes('class="back-to-top"'));assert.ok(layout.includes('Terug naar boven'));
+  assert.ok(!layout.includes('class="footer-top-link"'));
   assert.ok(css.includes('max-width:380px'));assert.ok(css.includes('aspect-ratio:4/5'));assert.ok(css.includes('border-radius:24px'));
   assert.ok(css.includes('prefers-reduced-motion:reduce'));assert.ok(!home.includes('portrait-line'));assert.ok(!home.includes('hero-location'));
 });

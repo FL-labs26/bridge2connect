@@ -45,9 +45,9 @@ test('Hero has no location/3D caption and portrait has no decorative line', asyn
   assert.ok(!html.includes('portrait-line'));
   assert.ok(!html.includes('Architectonische 3D-impressie'));
 });
-test('Header and footer use the transparent PNG, not the white-matted logo', async () => {
+test('Header, full-screen menu and footer use transparent PNG logos', async () => {
   const html = await readFile(path.join(root, 'dist/index.html'), 'utf8');
-  assert.equal((html.match(/src="\/images\/logo.png"/g) || []).length, 2);
+  assert.equal((html.match(/src="\/images\/logo.png"/g) || []).length, 3);
   assert.ok(!html.includes('src="/images/logo.webp"'));
   const png = await readFile(path.join(root, 'public/images/logo.png'));
   assert.equal(png.subarray(1, 4).toString(), 'PNG');

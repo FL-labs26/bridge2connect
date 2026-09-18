@@ -41,6 +41,17 @@ export function portrait({ className = '', eager = false, size = 'large' } = {})
   return `<img class="${escape(className)}" src="/images/lex-${size === 'small' ? '160' : '640'}.webp" ${size !== 'small' ? 'srcset="/images/lex-400.webp 400w, /images/lex-640.webp 640w" sizes="(max-width: 360px) 88vw, (max-width: 650px) 300px, 380px"' : ''} alt="Lex de Lange" width="640" height="640" ${eager ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"'} decoding="async">`;
 }
 
-export function bridgePicture({ className = '', eager = false, sizes = '100vw' } = {}) {
-  return `<picture class="${escape(className)}"><source type="image/avif" srcset="/images/bridge-960.avif 960w, /images/bridge-1672.avif 1672w" sizes="${escape(sizes)}"><img src="/images/bridge-1672.webp" srcset="/images/bridge-960.webp 960w, /images/bridge-1672.webp 1672w" sizes="${escape(sizes)}" alt="AI-sfeerimpressie van de John Frostbrug bij Arnhem in avondlicht" width="1672" height="941" ${eager ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"'} decoding="async"></picture>`;
+export function bridgePicture({ className = '', eager = false, sizes = '100vw', lang = 'nl' } = {}) {
+  return `<picture class="${escape(className)}"><source type="image/avif" srcset="/images/bridge-960.avif 960w, /images/bridge-1672.avif 1672w" sizes="${escape(sizes)}"><img src="/images/bridge-1672.webp" srcset="/images/bridge-960.webp 960w, /images/bridge-1672.webp 1672w" sizes="${escape(sizes)}" alt="${lang === 'en' ? 'AI visual impression of the John Frost Bridge in Arnhem at dusk' : 'AI-sfeerimpressie van de John Frostbrug bij Arnhem in avondlicht'}" width="1672" height="941" ${eager ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"'} decoding="async"></picture>`;
+}
+
+/** Licensed editorial photography; never presented as a client project. */
+export function editorialPhoto(name, lang='nl', className='expertise-photo') {
+  const images={
+    connectivity:{height:720,nl:'Grote witte communicatieantenne tegen een blauwgroene lucht',en:'Large white communications antenna against a blue-green sky'},
+    technology:{height:640,nl:'Detail van een printplaat met elektronische componenten',en:'Close-up of a circuit board with electronic components'}
+  };
+  const image=images[name]; if(!image) throw new Error('Unknown editorial image: '+name);
+  const sizes=className==='expertise-context-image'?'(max-width: 650px) calc(100vw - 48px), 340px':'(max-width: 650px) calc(100vw - 48px), 390px';
+  return `<figure class="${escape(className)}"><img class="editorial-image" src="/images/${name}-960.webp" srcset="/images/${name}-480.webp 480w, /images/${name}-960.webp 960w, /images/${name}-1440.webp 1440w" sizes="${sizes}" width="960" height="${image.height}" alt="${escape(image[lang==='en'?'en':'nl'])}" loading="lazy" decoding="async"></figure>`;
 }

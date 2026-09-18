@@ -37,3 +37,11 @@ Controleer het recht en de toestemming om logo, portret en bedrijfsvermeldingen 
 `logo.png` is een transparante RGBA-versie van het bestaande logo.webp. Alleen de witte matte en de witte randpixels zijn verwijderd; beeldmerk en letters zijn niet opnieuw gegenereerd. Het oorspronkelijke bestand blijft aanwezig. `scripts/prepare-logo.py` maakt de bewerking reproduceerbaar.
 
 De losse bannerbijschriftregel en de gouden decoratiestreep bij het portret zijn verwijderd. De herkomst van het AI-brugbeeld staat nog in de alternatieve tekst en op de informatiepagina. Dit is niet ineens een echte foto of 3D-animatie.
+
+## Aanvullende fotografie en STRATO-versie — 18 september 2026
+
+`connectivity-480.webp`, `connectivity-960.webp` en `connectivity-1440.webp` tonen een communicatieantenne; bronvermelding in de website: Bernd Dittrich, Unsplash, foto `FIdxhTGKmps`.
+
+`technology-480.webp`, `technology-960.webp` en `technology-1440.webp` tonen een printplaat; bronvermelding in de website: Florian Olivo, Unsplash, foto `LrdVFlk4CJ8`.
+
+Deze foto's zijn illustratief. Ze worden niet als klantprojecten, eigen installaties of locaties van Bridge2Connect gepresenteerd. De bron- en licentielinks staan op de Nederlandse en Engelse website-informatiepagina. De hostingvermelding voor de hoofdwebsite is bijgewerkt naar STRATO.

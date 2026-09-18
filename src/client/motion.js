@@ -20,13 +20,13 @@
     }
     if (image) {
       const width = window.innerWidth;
-      const maxDrift = width <= 650 ? 24 : width <= 899 ? 44 : 76;
+      const maxDrift = width <= 899 ? 0 : 76;
       const travel = Math.max(0, Math.min(heroHeight, scroll - heroTop));
       const drift = reduced.matches ? 0 : Math.min(maxDrift, travel * .20);
       if (heroVisible || reduced.matches) image.style.setProperty('--hero-drift', drift.toFixed(2) + 'px');
     }
     if (topButton) {
-      const editing = document.activeElement?.matches('input,textarea,select,[contenteditable="true"]');
+      const editing = document.activeElement?.matches('input,textarea,select,[role="combobox"],[contenteditable="true"]');
       const blocked = pageHeader?.classList.contains('is-open') || messageDialog?.open || editing;
       const shouldShow = !blocked && scroll > (buttonShown ? 450 : 600);
       if (shouldShow !== buttonShown) {

@@ -1,7 +1,5 @@
 name: Website review on GitHub Pages
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,6 +29,7 @@ jobs:
         run: npm run build
         env:
           SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_ORIGIN: https://fl-labs26.github.io
       - name: Upload only the built website
         uses: actions/upload-pages-artifact@v4
         with:

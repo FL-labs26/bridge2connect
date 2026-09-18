@@ -1,9 +1,9 @@
 {
   "name": "bridge2connect-website",
-  "version": "1.3.0",
+  "version": "1.6.0",
   "private": true,
   "type": "module",
-  "description": "Bridge2Connect — modulaire, statisch opgebouwde website van Lex de Lange",
+  "description": "Bridge2Connect — Nederlandse en Engelse advieswebsite",
   "engines": {
     "node": ">=22.12.0"
   },
