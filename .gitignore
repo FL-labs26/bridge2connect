@@ -1,0 +1,27 @@
+# Local/runtime files never belong in the public repository.
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+.build-*/
+checks/
+.local-backups/
+.review/
+.deploy-*/
+.github-local/
+__pycache__/
+*.pyc
+*.log
+*.zip
+*.blend
+*.blend1
+.DS_Store
+Thumbs.db
+file-manifest.json
+# Historical local plans contain machine-specific context; retain them locally.
+docs/*
+!docs/BEELDMATERIAAL.md
+# Old local onboarding documentation is not part of this public review release.
+/README.md
+/AGENTS.md

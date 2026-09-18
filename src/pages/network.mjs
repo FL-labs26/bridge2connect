@@ -1,0 +1,10 @@
+import { site, companies } from '../content/site.mjs';
+import { escape, safeUrl, eyebrow, textLink, icon } from '../components/ui.mjs';
+import { breadcrumbs } from '../components/sections.mjs';
+
+export default function network() {
+  const partner = safeUrl(site.partnerUrl);
+  return `<section class="page-intro section-space"><div class="container">${breadcrumbs('Netwerk')}${eyebrow('Netwerk & samenwerking')}<div class="heading-grid page-heading"><h1>Een netwerk binnen<br>en rondom de sector.</h1><p class="large-paragraph">In mijn werk breng ik bedrijven, aanspreekpunten en samenwerkingspartners bij elkaar. Hieronder vindt u een selectie van de bedrijven waarvoor of waarmee ik werk.</p></div></div></section>
+  <section class="network-companies section-space"><div class="container"><div class="heading-grid"><div>${eyebrow('Een selectie')}<h2>Werkrelaties</h2></div><p>Van grote IT-bedrijven tot gespecialiseerde technologiebedrijven: de vraag en de benodigde ondersteuning verschillen per organisatie.</p></div><div class="network-grid">${companies.map((name, index) => `<article class="network-name"><h3>${escape(name)}</h3></article>`).join('')}</div></div></section>
+  <section class="floru-section section-space" id="floru"><div class="container editorial-layout"><div>${eyebrow('Samenwerking')}<h2>Floru Consulting</h2></div><div class="prose"><p class="large-paragraph">Bridge2Connect werkt in meerdere trajecten intensief samen met Floru Consulting.</p><p>Door vanuit verschillende perspectieven naar een vraag te kijken, ontstaat een completer beeld. De invulling van de samenwerking volgt het vraagstuk en wat het bedrijf op dat moment nodig heeft.</p><p>Wilt u bespreken welke ondersteuning bij uw organisatie past? Een eerste gesprek met Lex is het vertrekpunt.</p>${partner ? `<a class="text-link" href="${escape(partner)}" target="_blank" rel="noopener noreferrer">Naar Floru Consulting ${icon('diagonal')}</a>` : textLink('/contact/', 'Bespreek de mogelijkheden')}</div></div></section>`;
+}
